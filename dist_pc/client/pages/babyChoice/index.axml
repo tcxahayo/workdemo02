@@ -1,0 +1,11 @@
+<block a:if="{{$taroCompReady}}">
+    <view class="babyChoice">
+        <view class="baby-tab">
+            <view class="{{'tab1 ' + (baby ? 'action' : '')}}" onTap="changeOperation" data-e-onTap-so="this" data-e-onTap-a-a="baby">按宝贝选择</view>
+            <view class="{{'tab2 ' + (baby ? '' : 'action')}}" onTap="changeOperation" data-e-onTap-so="this" data-e-onTap-a-a="class">按分类选择</view>
+        </view>
+        <view class="babyContent">
+            <baby-content></baby-content>
+        </view>
+    </view>
+</block>

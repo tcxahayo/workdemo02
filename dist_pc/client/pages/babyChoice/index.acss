@@ -1,0 +1,20 @@
+
+.babyChoice {
+  width: 100%;
+  height: 100%;
+  background-color: #F0F2F5;
+  font-size: 16px; }
+  .babyChoice .baby-tab {
+    display: flex;
+    font-size: 14px;
+    color: #333333;
+    margin-top: 14px; }
+    .babyChoice .baby-tab .tab1 {
+      margin-right: 60px; }
+    .babyChoice .baby-tab .action {
+      color: #2d6eff;
+      border-bottom: 2px solid #2d6eff;
+      padding-bottom: 14px;
+      font-size: 14px; }
+  .babyChoice .babyContent {
+    margin-top: 24px; }

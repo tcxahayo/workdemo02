@@ -1,0 +1,139 @@
+<block a:if="{{$taroCompReady}}">
+    <view class="baby-content">
+        <view class="select-box">
+            <view class="select1">
+                <select className="select" onToggleHighlightItem="onToggleHighlightItem" defaultValue="出售中" showSearch="{{true}}" hasClear="{{true}}">
+                    <option value="出售中">出售中</option>
+                    <option value="仓库中">仓库中</option>
+                    <option value="已售完">已售完</option>
+                </select>
+            </view>
+            <view class="select2">
+                <select className="select" defaultValue="全部分类">
+                    <option value="全部分类">全部分类</option>
+                    <option value="未分类" selected="{{true}}">未分类</option>
+                </select>
+            </view>
+            <view class="select3">
+                <select className="select">
+                    <option value="宝贝关键词">宝贝关键词</option>
+                    <option value="商家编码">商家编码</option>
+                </select>
+                <view class="input-box">
+                    <view class="iconfont icno"></view>
+                    <input class="input" placeholder="请输入搜索内容" />
+                </view>
+            </view>
+            <view class="btu-search">
+                <button class="btu">搜索</button>
+            </view>
+        </view>
+        <view class="babyList">
+            <view class="muen">
+                <checkbox className="cheack-all">全选</checkbox>
+                <view class="name">宝贝信息</view>
+                <view class="price">价格</view>
+                <view class="inventory">
+                    <view class="txt">库存</view>
+                    <view class="oper">
+                        <view class="iconfont icno-up"></view>
+                        <view class="iconfont icno-down"></view>
+                    </view>
+                </view>
+                <view class="sales">
+                    <view class="txt">销量</view>
+                    <view class="oper">
+                        <view class="iconfont icno-up action"></view>
+                        <view class="iconfont icno-down"></view>
+                    </view>
+                </view>
+            </view>
+            <view class="content">
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12.00</view>
+                    <view class="inventory">266</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+                <checkbox className="baby-info">
+                    <image src="" className="img"></image>
+                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
+                    <view class="price">¥12345.00</view>
+                    <view class="inventory">9999</view>
+                    <view class="sales">0</view>
+                </checkbox>
+            </view>
+        </view>
+        <view class="page-box">
+            <view class="page">
+                <my-pagination compid="{{$compid__44}}"></my-pagination>
+                <view class="current-page"></view>
+            </view>
+            <button class="btu-sub">确定（1/20）</button>
+        </view>
+    </view>
+</block>

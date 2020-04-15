@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "baby-content": "../../components/babyChoice/baby/index"
+  }
+}
