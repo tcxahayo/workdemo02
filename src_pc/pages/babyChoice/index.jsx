@@ -12,6 +12,7 @@ class BabyChoice extends Component {
             baby:true
          }
     }
+    //顶部tab切换
     changeOperation =(index)=>{
         if(index === 'baby'){
             this.setState({
@@ -23,7 +24,6 @@ class BabyChoice extends Component {
             })
         }
     }
-
     render() {
         return (
             <View className='babyChoice'>

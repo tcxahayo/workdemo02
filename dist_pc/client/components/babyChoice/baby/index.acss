@@ -135,7 +135,26 @@
       margin-top: 18px;
       margin-left: 48px;
       height: 60vh;
-      overflow-y: scroll; }
+      overflow-y: scroll;
+      position: relative; }
+      .baby-content .babyList .content .empty {
+        width: 200px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 116px; }
+        .baby-content .babyList .content .empty .imgBlock {
+          width: 167px !important;
+          height: 95px !important;
+          background: #d8d8d8;
+          border: 1px solid #979797; }
+        .baby-content .babyList .content .empty .txt {
+          font-weight: 500;
+          color: #333333;
+          font-size: 20px; }
       .baby-content .babyList .content .baby-info {
         display: flex;
         font-weight: 400;

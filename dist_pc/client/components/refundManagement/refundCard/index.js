@@ -51,7 +51,7 @@ var RefundCard = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = RefundCard.__proto__ || Object.getPrototypeOf(RefundCard)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp2", "anonymousState__temp3", "loopArray22", "anonymousState__temp4", "anonymousState__temp5", "trade", "anonymousState__temp", "REFUND_TABS", "$anonymousCallee__0", "activeTabKey"], _this.goRefundDetail = function (refund) {}, _this.customComponents = ["OrderCard"], _temp), _possibleConstructorReturn(_this, _ret);
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = RefundCard.__proto__ || Object.getPrototypeOf(RefundCard)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["anonymousState__temp2", "anonymousState__temp3", "loopArray23", "anonymousState__temp4", "anonymousState__temp5", "trade", "anonymousState__temp", "REFUND_TABS", "$anonymousCallee__0", "activeTabKey"], _this.goRefundDetail = function (refund) {}, _this.customComponents = ["OrderCard"], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(RefundCard, [{
@@ -99,7 +99,7 @@ var RefundCard = (_temp2 = _class = function (_BaseComponent) {
       var $anonymousCallee__0 = (0, _resolveTopResponse.getOrders)(trade);
       var anonymousState__temp4 = { text: trade.buyer_nick, msg: '复制成功' };
       var anonymousState__temp5 = { text: trade.refund.refund_id, msg: '复制成功' };
-      var loopArray22 = (0, _resolveTopResponse.getOrders)(trade).map(function (order, _anonIdx) {
+      var loopArray23 = (0, _resolveTopResponse.getOrders)(trade).map(function (order, _anonIdx) {
         order = {
           $original: (0, _index.internal_get_original)(order)
         };
@@ -121,7 +121,7 @@ var RefundCard = (_temp2 = _class = function (_BaseComponent) {
       Object.assign(this.__state, {
         anonymousState__temp2: anonymousState__temp2,
         anonymousState__temp3: anonymousState__temp3,
-        loopArray22: loopArray22,
+        loopArray23: loopArray23,
         anonymousState__temp4: anonymousState__temp4,
         anonymousState__temp5: anonymousState__temp5,
         trade: trade,

@@ -2,7 +2,7 @@
     <view class="baby-content">
         <view class="select-box">
             <view class="select1">
-                <select className="select" onToggleHighlightItem="onToggleHighlightItem" defaultValue="出售中" showSearch="{{true}}" hasClear="{{true}}">
+                <select className="select" onChange="changeStatus" onToggleHighlightItem="onToggleHighlightItem" defaultValue="出售中" showSearch="{{true}}" hasClear="{{true}}">
                     <option value="出售中">出售中</option>
                     <option value="仓库中">仓库中</option>
                     <option value="已售完">已售完</option>
@@ -21,119 +21,58 @@
                 </select>
                 <view class="input-box">
                     <view class="iconfont icno"></view>
-                    <input class="input" placeholder="请输入搜索内容" />
+                    <input class="input" placeholder="请输入搜索内容" value="{{keywords}}" onChange="valueChange" />
                 </view>
             </view>
             <view class="btu-search">
-                <button class="btu">搜索</button>
+                <button class="btu" onTap="serach">搜索</button>
             </view>
         </view>
         <view class="babyList">
             <view class="muen">
-                <checkbox className="cheack-all">全选</checkbox>
+                <checkbox className="cheack-all" id="all" onChange="checkAll" values="123">全选</checkbox>
                 <view class="name">宝贝信息</view>
-                <view class="price">价格</view>
+                <view class="price" onTap="demo">价格</view>
                 <view class="inventory">
                     <view class="txt">库存</view>
                     <view class="oper">
-                        <view class="iconfont icno-up"></view>
-                        <view class="iconfont icno-down"></view>
+                        <view class="{{'iconfont icno-up ' + (order_by === 'num:asc' ? 'action' : '')}}" onTap="orderBy" data-e-onTap-so="this" data-e-onTap-a-a="num:asc"></view>
+                        <view class="{{'iconfont icno-down ' + (order_by === 'num:desc' ? 'action' : '')}}" onTap="orderBy" data-e-onTap-so="this" data-e-onTap-a-a="num:desc"></view>
                     </view>
                 </view>
                 <view class="sales">
                     <view class="txt">销量</view>
                     <view class="oper">
-                        <view class="iconfont icno-up action"></view>
-                        <view class="iconfont icno-down"></view>
+                        <view class="{{'iconfont icno-up ' + (order_by === 'sold_quantity:asc' ? 'action' : '')}}" onTap="orderBy" data-e-onTap-so="this" data-e-onTap-a-a="sold_quantity:asc"></view>
+                        <view class="{{'iconfont icno-down ' + (order_by === 'sold_quantity:desc' ? 'action' : '')}}" onTap="orderBy" data-e-onTap-so="this" data-e-onTap-a-a="sold_quantity:desc"></view>
                     </view>
                 </view>
             </view>
             <view class="content">
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12.00</view>
-                    <view class="inventory">266</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
-                <checkbox className="baby-info">
-                    <image src="" className="img"></image>
-                    <view class="name">活动名称活动名称活动名称活动名称活动名称</view>
-                    <view class="price">¥12345.00</view>
-                    <view class="inventory">9999</view>
-                    <view class="sales">0</view>
-                </checkbox>
+                <block a:if="{{list.length == 0}}">
+                    <view class="empty">
+                        <view class="imgBlock"></view>
+                        <view class="txt">未找到符合条件的宝贝</view>
+                    </view>
+                </block>
+                <block a:if="{{list.length > 0}}">
+                    <checkbox className="baby-info" a:key="num_iid" onChange="changeChecked" id="{{item.num_iid}}" checked="{{item.checked}}" data-index="{{index}}" a:for="{{list}}" a:for-item="item" a:for-index="index">
+                        <image src="{{item.pic_url}}" className="img"></image>
+                        <view class="name">{{item.title}}</view>
+                        <view class="price">¥{{item.price}}</view>
+                        <view class="inventory">{{item.num}}</view>
+                        <view class="sales">{{item.sold_quantity}}</view>
+                    </checkbox>
+                </block>
             </view>
         </view>
-        <view class="page-box">
-            <view class="page">
-                <my-pagination compid="{{$compid__44}}"></my-pagination>
-                <view class="current-page"></view>
+        <block a:if="{{list.length > 0}}">
+            <view class="page-box">
+                <view class="page">
+                    <my-pagination compid="{{$compid__70}}"></my-pagination>
+                </view>
+                <button class="btu-sub">确定（{{cheackNum}}/{{total_results}}）</button>
             </view>
-            <button class="btu-sub">确定（1/20）</button>
-        </view>
+        </block>
     </view>
 </block>

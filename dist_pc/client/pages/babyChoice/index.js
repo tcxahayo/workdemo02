@@ -60,6 +60,8 @@ var BabyChoice = (_temp2 = _class = function (_BaseComponent) {
       };
       this.$$refs = [];
     }
+    //顶部tab切换
+
   }, {
     key: "_createData",
     value: function _createData() {

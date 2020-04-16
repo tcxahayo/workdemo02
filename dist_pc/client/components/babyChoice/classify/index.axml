@@ -1,3 +1,0 @@
-<block a:if="{{$taroCompReady}}">
-    <view class="class-content">这是分类的返回页面</view>
-</block>
