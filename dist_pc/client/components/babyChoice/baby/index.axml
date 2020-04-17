@@ -9,13 +9,12 @@
                 </select>
             </view>
             <view class="select2">
-                <select className="select" defaultValue="全部分类">
-                    <option value="全部分类">全部分类</option>
-                    <option value="未分类" selected="{{true}}">未分类</option>
+                <select className="select" defaultValue="全部分类" onChange="changeClasstify">
+                    <option value="{{item.value}}" a:key="value" a:for="{{classList}}" a:for-item="item" a:for-index="_anonIdx2">{{item.label}}</option>
                 </select>
             </view>
             <view class="select3">
-                <select className="select">
+                <select className="select" defaultValue="宝贝关键词" onChange="changeWord">
                     <option value="宝贝关键词">宝贝关键词</option>
                     <option value="商家编码">商家编码</option>
                 </select>
@@ -30,7 +29,7 @@
         </view>
         <view class="babyList">
             <view class="muen">
-                <checkbox className="cheack-all" id="all" onChange="checkAll" values="123">全选</checkbox>
+                <checkbox className="cheack-all" id="all" onChange="checkAll" values="123" checked="{{checkAll}}">全选</checkbox>
                 <view class="name">宝贝信息</view>
                 <view class="price" onTap="demo">价格</view>
                 <view class="inventory">
@@ -69,9 +68,11 @@
         <block a:if="{{list.length > 0}}">
             <view class="page-box">
                 <view class="page">
-                    <my-pagination compid="{{$compid__70}}"></my-pagination>
+                    <my-pagination compid="{{$compid__75}}"></my-pagination>
                 </view>
-                <button class="btu-sub">确定（{{cheackNum}}/{{total_results}}）</button>
+                <view class="btu-box">
+                    <button class="btu-sub">确定（{{cheackList.length}}/{{total_results}}）</button>
+                </view>
             </view>
         </block>
     </view>

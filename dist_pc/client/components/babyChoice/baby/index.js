@@ -12,13 +12,17 @@ var _get = function get(object, property, receiver) { if (object === null) objec
 
 var _class, _temp2;
 
-var _index = require("../../../npm/_tarojs/taro-alipay/index.js");
+var _index2 = require("../../../npm/_tarojs/taro-alipay/index.js");
 
-var _index2 = _interopRequireDefault(_index);
+var _index3 = _interopRequireDefault(_index2);
 
 var _taobaoItemListGet = require("../../../public/tradePublic/itemTopApi/taobaoItemListGet.js");
 
+var _index4 = require("../../../public/tradePublic/intercept/index.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -41,7 +45,13 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = BabyContent.__proto__ || Object.getPrototypeOf(BabyContent)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["$compid__70", "keywords", "order_by", "list", "cheackNum", "total_results", "fields", "page", "status", "current"], _this.getList = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = BabyContent.__proto__ || Object.getPrototypeOf(BabyContent)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["$compid__75", "classList", "keywords", "checkAll", "order_by", "list", "cheackList", "total_results", "fields", "page", "status", "current", "seller_cids", "changeWord"], _this.getClasstify = function () {
+      (0, _index4.getInterceptBabySelectDataSource)(function (data) {
+        _this.setState({
+          classList: data
+        });
+      });
+    }, _this.getList = function () {
       (0, _taobaoItemListGet.taobaoItemListGet)({
         fields: _this.state.fields,
         page_no: _this.state.current,
@@ -49,7 +59,8 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
         status: _this.state.status,
         extraArgs: {
           order_by: _this.state.order_by,
-          q: _this.state.keywords
+          q: _this.state.keywords,
+          seller_cids: _this.state.seller_cids
         },
         callback: function callback(data) {
           console.log(data);
@@ -57,6 +68,43 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
             var newList = data.items.item.map(function (item, index) {
               item.pic_url = item.pic_url + '_60x60.jpg';
               item.checked = false;
+              if (_this.state.cheackList.indexOf(item.num_iid) !== -1) {
+                item.checked = true;
+              }
+              return item;
+            });
+            _this.setState({
+              list: newList,
+              total_results: data.total_results,
+              keywords: ''
+            });
+          } else {
+            _this.setState({
+              list: []
+            });
+          }
+        }
+      });
+    }, _this.getListById = function () {
+      (0, _taobaoItemListGet.taobaoItemListGet)({
+        fields: _this.state.fields,
+        page_no: _this.state.current,
+        page_size: 20,
+        status: _this.state.status,
+        extraArgs: {
+          order_by: _this.state.order_by,
+          seller_cids: _this.state.seller_cids
+        },
+        callback: function callback(data) {
+          var num = data.total_results / 20;
+          console.log(data);
+          if (data.total_results > 0) {
+            var newList = data.items.item.map(function (item, index) {
+              item.pic_url = item.pic_url + '_60x60.jpg';
+              item.checked = false;
+              if (_this.state.cheackList.indexOf(item.num_iid) !== -1) {
+                item.checked = true;
+              }
               return item;
             });
             _this.setState({
@@ -72,27 +120,50 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
         }
       });
     }, _this.changeStatus = function (e) {
-      console.log(e.detail.value);
       _this.setState({
         status: e.detail.value
       });
+    }, _this.changeClasstify = function (e) {
+      _this.setState({
+        seller_cids: e.detail.value
+      });
+    }, _this.changeWord = function (e) {
+      _this.setState({
+        changeWord: e.detail.value
+      });
     }, _this.changePage = function (current) {
       _this.setState({
-        current: current
+        current: current,
+        checkAll: false
       }, function () {
         _this.getList();
       });
     }, _this.serach = function () {
-      console.log(123);
-      _this.setState({
-        current: 1,
-        order_by: 'list_time:desc'
-      }, function () {
-        _this.getList();
-      });
+      if (_this.state.changeWord === '宝贝关键词') {
+        _this.setState({
+          current: 1,
+          order_by: 'list_time:desc',
+          cheackList: [],
+          checkAll: false
+        }, function () {
+          _this.getList();
+        });
+      } else {
+        _this.setState({
+          current: 1,
+          order_by: 'list_time:desc',
+          cheackList: [],
+          checkAll: false,
+          keywords: ''
+        }, function () {
+          _this.getListById();
+        });
+      }
     }, _this.orderBy = function (value) {
       _this.setState({
-        order_by: value
+        order_by: value,
+        cheackList: [],
+        checkAll: false
       }, function () {
         _this.getList();
       });
@@ -102,54 +173,59 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
       });
     }, _this.changeChecked = function (e) {
       console.log(e);
+      var id = e.target.id;
       var index = e.target.dataset.index;
       var newList = _this.state.list;
       newList[index].checked = !newList[index].checked;
       if (e.target.value) {
         _this.setState({
           cheackNum: _this.state.cheackNum + 1,
-          list: newList
+          list: newList,
+          cheackList: [].concat(_toConsumableArray(_this.state.cheackList), [id])
         });
       } else {
+        var _index = _this.state.cheackList.indexOf(id);
+        var newCheackList = _this.state.cheackList;
+        newCheackList.splice(_index, 1);
         _this.setState({
           cheackNum: _this.state.cheackNum - 1,
-          list: newList
+          list: newList,
+          cheackList: newCheackList
         });
       }
     }, _this.checkAll = function (e) {
       console.log(e);
-      console.log(e.target.id);
       var newList = _this.state.list;
-      var num = 0;
+      var newCheackList = _this.state.cheackList;
       if (e.target.value) {
         newList.map(function (item) {
-          if (item.checked == false) {
-            num += 1;
-          }
+          newCheackList.push(item.num_iid);
           item.checked = true;
           return item;
         });
+        var arr = new Set(newCheackList);
         _this.setState({
           list: newList,
-          cheackNum: _this.state.cheackNum + num
+          cheackList: Array.from(arr),
+          checkAll: true
         });
-        console.log(num);
       } else {
         newList.map(function (item) {
+          newCheackList.splice(newCheackList.indexOf(item.id), 1);
           item.checked = false;
           return item;
         });
         _this.setState({
           list: newList,
-          cheackNum: _this.state.cheackNum - 20
+          cheackList: newCheackList,
+          checkAll: false
         });
       }
     }, _this.demo = function () {
-      _this.setState({
-        checked: !_this.state.checked
-      });
-      sessionStorage.setItem('data', data);
+      sessionStorage.setItem('data', _this.state.list);
       console.log(_this.state.list);
+      console.log(_this.state.cheackList);
+      console.log(_this.state.classList);
     }, _this.customComponents = ["MyPagination"], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -158,7 +234,7 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
     value: function _constructor(props) {
       _get(BabyContent.prototype.__proto__ || Object.getPrototypeOf(BabyContent.prototype), "_constructor", this).call(this, props);
       this.state = {
-        fields: 'title,num_iid,pic_url,num,price,sold_quantity',
+        fields: 'title,num_iid,pic_url,num,price,sold_quantity,outer_id',
         page: 1,
         status: '出售中',
         list: [],
@@ -166,11 +242,25 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
         current: 1,
         order_by: 'list_time:desc',
         keywords: '',
-        cheackNum: 0
+        cheackList: [],
+        checkAll: false,
+        classList: [],
+        seller_cids: 'all',
+        changeWord: '宝贝关键词'
       };
       this.$$refs = [];
     }
+    //分类接口
+
+    //接口调取数据,非商家编码
+
+    //查询商家编码接口
+
     //切换商品状态
+
+    //选择分类
+
+    //切换查询关键词
 
     //点击页数
 
@@ -189,6 +279,8 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
     value: function componentDidMount() {
       //初始化页面数据，获取出售中的商品
       this.getList();
+      //获取分类
+      this.getClasstify();
     }
   }, {
     key: "_createData",
@@ -199,10 +291,10 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
       var __prefix = this.$prefix;
       ;
 
-      var _genCompid = (0, _index.genCompid)(__prefix + "$compid__70"),
+      var _genCompid = (0, _index2.genCompid)(__prefix + "$compid__75"),
           _genCompid2 = _slicedToArray(_genCompid, 2),
-          $prevCompid__70 = _genCompid2[0],
-          $compid__70 = _genCompid2[1];
+          $prevCompid__75 = _genCompid2[0],
+          $compid__75 = _genCompid2[1];
 
       var _state = this.__state,
           list = _state.list,
@@ -210,8 +302,9 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
           current = _state.current,
           order_by = _state.order_by,
           keywords = _state.keywords,
-          cheackNum = _state.cheackNum,
-          checked = _state.checked;
+          checkAll = _state.checkAll,
+          cheackList = _state.cheackList,
+          classList = _state.classList;
 
       list.length > 0 && propsManager.set({
         "total": total_results,
@@ -219,16 +312,16 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
         "pageSizeSelector": "dropdown",
         "pageSize": 20,
         "onPageNoChange": this.changePage
-      }, $compid__70, $prevCompid__70);
+      }, $compid__75, $prevCompid__75);
       Object.assign(this.__state, {
-        $compid__70: $compid__70
+        $compid__75: $compid__75
       });
       return this.__state;
     }
   }]);
 
   return BabyContent;
-}(_index.Component), _class.$$events = ["changeStatus", "valueChange", "serach", "checkAll", "demo", "orderBy", "changeChecked"], _class.$$componentPath = "components/babyChoice/baby/index", _temp2);
+}(_index2.Component), _class.$$events = ["changeStatus", "changeClasstify", "changeWord", "valueChange", "serach", "checkAll", "demo", "orderBy", "changeChecked"], _class.$$componentPath = "components/babyChoice/baby/index", _temp2);
 exports.default = BabyContent;
 
 Component(require('../../../npm/_tarojs/taro-alipay/index.js').default.createComponent(BabyContent));

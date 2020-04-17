@@ -8,7 +8,9 @@
     display: flex;
     font-size: 14px;
     color: #333333;
-    margin-top: 14px; }
+    padding-top: 14px;
+    padding-left: 25px;
+    background: white; }
     .babyChoice .baby-tab .tab1 {
       margin-right: 60px; }
     .babyChoice .baby-tab .action {
@@ -17,4 +19,5 @@
       padding-bottom: 14px;
       font-size: 14px; }
   .babyChoice .babyContent {
-    margin-top: 24px; }
+    padding-top: 24px;
+    background: #f7f8fa; }

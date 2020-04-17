@@ -4,12 +4,13 @@ import './icnofont.scss';
 import './index.scss';
 import MyPagination from '../../myPagination/index';
 import { taobaoItemListGet } from 'tradePublic/itemTopApi/taobaoItemListGet.js';
+import { getInterceptBabySelectDataSource } from 'tradePublic/intercept/index.js'
 
 class BabyContent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fields: 'title,num_iid,pic_url,num,price,sold_quantity',
+            fields: 'title,num_iid,pic_url,num,price,sold_quantity,outer_id',
             page: 1,
             status: '出售中',
             list: [],
@@ -17,9 +18,24 @@ class BabyContent extends Component {
             current: 1,
             order_by: 'list_time:desc',
             keywords: '',
-            cheackNum:0
+            cheackList:[],
+            checkAll:false,
+            classList:[],
+            seller_cids:'all',
+            changeWord:'宝贝关键词'
         }
     }
+    //分类接口
+    getClasstify =()=>{
+        getInterceptBabySelectDataSource(
+            (data)=>{
+                this.setState({
+                    classList:data
+                })
+            }
+        );
+    }
+    //接口调取数据,非商家编码
     getList = () => {
         taobaoItemListGet(
             {
@@ -29,7 +45,8 @@ class BabyContent extends Component {
                 status: this.state.status,
                 extraArgs: {
                     order_by: this.state.order_by,
-                    q: this.state.keywords
+                    q: this.state.keywords,
+                    seller_cids:this.state.seller_cids
                 },
                 callback: (data) => {
                     console.log(data);
@@ -37,6 +54,48 @@ class BabyContent extends Component {
                         let newList = data.items.item.map((item, index) => {
                             item.pic_url = item.pic_url + '_60x60.jpg';
                             item.checked = false;
+                            if(this.state.cheackList.indexOf(item.num_iid) !== -1){
+                                item.checked = true;
+                            }
+                            return item;
+                        })
+                        this.setState({
+                            list: newList,
+                            total_results: data.total_results,
+                            keywords: ''
+                        })
+                    } else {
+                        this.setState({
+                            list: []
+                        })
+                    }
+
+                }
+            }
+        )
+    }
+    //查询商家编码接口
+    getListById = ()=> {
+        taobaoItemListGet(
+            {
+                fields: this.state.fields,
+                page_no: this.state.current,
+                page_size: 20,
+                status: this.state.status,
+                extraArgs: {
+                    order_by: this.state.order_by,
+                    seller_cids:this.state.seller_cids
+                },
+                callback: (data) => {
+                    let num = data.total_results / 20;
+                    console.log(data);
+                    if (data.total_results > 0) {
+                        let newList = data.items.item.map((item, index) => {
+                            item.pic_url = item.pic_url + '_60x60.jpg';
+                            item.checked = false;
+                            if(this.state.cheackList.indexOf(item.num_iid) !== -1){
+                                item.checked = true;
+                            }
                             return item;
                         })
                         this.setState({
@@ -56,33 +115,61 @@ class BabyContent extends Component {
     }
     //切换商品状态
     changeStatus = (e) => {
-        console.log(e.detail.value);
         this.setState({
             status: e.detail.value
+        })
+    }
+     //选择分类
+     changeClasstify = (e)=> {
+        this.setState({
+            seller_cids:e.detail.value
+        })
+    }
+    //切换查询关键词
+    changeWord = (e)=> {
+        this.setState({
+            changeWord:e.detail.value
         })
     }
     //点击页数
     changePage = (current) => {
         this.setState({
-            current: current
+            current: current,
+            checkAll:false
         }, () => {
             this.getList();
         })
     }
     //确定查询
     serach = () => {
-        console.log(123)
-        this.setState({
-            current: 1,
-            order_by: 'list_time:desc'
-        }, () => {
-            this.getList();
-        })
+        if(this.state.changeWord === '宝贝关键词'){
+            this.setState({
+                current: 1,
+                order_by: 'list_time:desc',
+                cheackList:[],
+                checkAll:false
+            }, () => {
+                this.getList();
+            })
+        }else{
+            this.setState({
+                current: 1,
+                order_by: 'list_time:desc',
+                cheackList:[],
+                checkAll:false,
+                keywords:''
+            }, () => {
+                this.getListById();
+            })
+        }
+       
     }
     //点击排序
     orderBy = (value) => {
         this.setState({
-            order_by: value
+            order_by: value,
+            cheackList:[],
+            checkAll:false
         }, () => {
             this.getList();
         })
@@ -96,67 +183,72 @@ class BabyContent extends Component {
     //cheackbox,单选
     changeChecked = (e)=> {
         console.log(e);
+        let id = e.target.id;
         let index = e.target.dataset.index;
         let newList = this.state.list;
         newList[index].checked = !newList[index].checked;
         if(e.target.value){
             this.setState({
                 cheackNum:this.state.cheackNum +1,
-                list:newList
+                list:newList,
+                cheackList:[...this.state.cheackList,id]
             })
         }else{
+            let index = this.state.cheackList.indexOf(id);
+            let newCheackList = this.state.cheackList;
+            newCheackList.splice(index,1);
             this.setState({
                 cheackNum:this.state.cheackNum -1,
-                list:newList
+                list:newList,
+                cheackList:newCheackList
             })
         }
     }
     //全选
     checkAll = (e)=> {
         console.log(e);
-        console.log(e.target.id);
         let newList = this.state.list;
-        let num = 0;
+        const newCheackList = this.state.cheackList
         if(e.target.value){
             newList.map((item)=>{
-                if(item.checked == false){
-                    num +=1
-                }
+                newCheackList.push(item.num_iid)
                 item.checked = true;
                 return item
             })
+            let arr = new Set(newCheackList);
             this.setState({
                 list:newList,
-                cheackNum:this.state.cheackNum + num
+                cheackList:Array.from(arr),
+                checkAll:true
             })
         }else{
             newList.map((item)=>{
-                if(item.checked == true){
-                    num +=1
-                }
+                newCheackList.splice(newCheackList.indexOf(item.id),1);
                 item.checked = false;
                 return item
             })
             this.setState({
                 list:newList,
-                cheackNum:this.state.cheackNum - 20
+                cheackList:newCheackList,
+                checkAll:false
             })
         }
-        
     }
+   
     demo = ()=>{
-        this.setState({
-            checked:!this.state.checked
-        })
-        sessionStorage.setItem('data',data);
+        sessionStorage.setItem('data',this.state.list);
         console.log(this.state.list);
+        console.log(this.state.cheackList);
+        console.log(this.state.classList);
     }
     componentDidMount() {
         //初始化页面数据，获取出售中的商品
         this.getList();
+        //获取分类
+        this.getClasstify();
     }
     render() {
-        const { list, total_results, current, order_by, keywords, cheackNum ,checked } = this.state;
+        const { list, total_results, current, order_by, keywords ,checkAll ,cheackList, classList} = this.state;
         return (
             <View className='baby-content'>
                 <View className='select-box'>
@@ -168,13 +260,18 @@ class BabyContent extends Component {
                         </select>
                     </View>
                     <View className='select2'>
-                        <select className='select' defaultValue="全部分类">
-                            <option value="全部分类">全部分类</option>
-                            <option value="未分类" selected>未分类</option>
+                    <select className='select' defaultValue="全部分类" onChange={this.changeClasstify}>
+                        {
+                            classList.map((item)=>{
+                                return(
+                                    <option value={item.value} key={item.value}>{item.label}</option>
+                                )
+                            })
+                        }
                         </select>
                     </View>
                     <View className='select3'>
-                        <select className='select'>
+                        <select className='select' defaultValue="宝贝关键词" onChange={this.changeWord}>
                             <option value="宝贝关键词">宝贝关键词</option>
                             <option value="商家编码">商家编码</option>
                         </select>
@@ -189,7 +286,7 @@ class BabyContent extends Component {
                 </View>
                 <View className='babyList'>
                     <View className='muen'>
-                        <checkbox className='cheack-all' id='all' onChange={this.checkAll} values='123'>全选</checkbox>
+                        <checkbox className='cheack-all' id='all' onChange={this.checkAll} values='123' checked={checkAll}>全选</checkbox>
                         <View className='name'>宝贝信息</View>
                         <View className='price' onClick={this.demo}>价格</View>
                         <View className='inventory'>
@@ -243,7 +340,10 @@ class BabyContent extends Component {
                                     onPageNoChange={this.changePage}
                                 />
                             </View>
-                    <Button className='btu-sub'>确定（{cheackNum}/{total_results}）</Button>
+                            <View className='btu-box'>
+                            <Button className='btu-sub'>确定（{cheackList.length}/{total_results}）</Button>
+                            </View>
+                            
                         </View>
                     )
                 }   

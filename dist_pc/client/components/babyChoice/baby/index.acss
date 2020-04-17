@@ -17,12 +17,12 @@
 .baby-content {
   width: 100%;
   height: 100%;
-  background-color: #F0F2F5;
+  background: #f7f8fa;
   font-size: 16px;
   font-family: PingFangSC-Regular,PingFang SC; }
   .baby-content .select-box {
     display: flex;
-    margin-top: 24px; }
+    padding-left: 24px; }
     .baby-content .select-box .select1 {
       width: 240px;
       height: 36px; }
@@ -51,7 +51,9 @@
         height: 36px;
         border: none !important; }
       .baby-content .select-box .select3 .input-box {
-        position: relative; }
+        position: relative;
+        background: white;
+        flex: 1; }
         .baby-content .select-box .select3 .input-box .icno {
           position: absolute;
           top: 10px;
@@ -72,17 +74,19 @@
         color: #333333;
         line-height: 35px; }
   .baby-content .babyList {
-    margin-top: 18px;
-    padding-bottom: 52px;
-    height: 100%; }
+    margin: 18px 24px 0 24px;
+    height: 100%;
+    background: white;
+    border-radius: 6px;
+    padding-bottom: 36px; }
     .baby-content .babyList .muen {
-      margin-top: 25px;
+      padding-top: 25px;
       display: flex;
       font-size: 14px; }
       .baby-content .babyList .muen .cheack-all {
         font-weight: 400;
         color: #333333;
-        margin-left: 48px; }
+        margin-left: 24px; }
       .baby-content .babyList .muen .name {
         margin-left: 41px;
         font-weight: 400;
@@ -133,9 +137,8 @@
             color: #3386F1; }
     .baby-content .babyList .content {
       margin-top: 18px;
-      margin-left: 48px;
-      height: 60vh;
       overflow-y: scroll;
+      height: 63vh;
       position: relative; }
       .baby-content .babyList .content .empty {
         width: 200px;
@@ -160,7 +163,18 @@
         font-weight: 400;
         color: #333333;
         font-size: 14px;
-        padding: 15px 0; }
+        padding: 15px 0;
+        padding-left: 24px;
+        position: relative; }
+        .baby-content .babyList .content .baby-info:hover {
+          background: #f4f5fa; }
+        .baby-content .babyList .content .baby-info::after {
+          content: '';
+          position: absolute;
+          width: 95%;
+          height: 1px;
+          background: #e6e9ed;
+          bottom: 0; }
         .baby-content .babyList .content .baby-info .img {
           width: 60px;
           height: 60px;
@@ -184,24 +198,26 @@
           display: inline-block; }
   .baby-content .page-box {
     width: 100%;
-    position: fixed;
-    bottom: 0;
-    text-align: center;
-    padding-bottom: 18px;
-    background-color: #F0F2F5; }
+    background: #f7f8fa; }
     .baby-content .page-box .page {
       height: 50px;
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
-      margin-right: 15%; }
-    .baby-content .page-box .btu-sub {
-      width: 196px;
-      height: 42px;
-      background: #2d6eff;
-      border-radius: 3px;
-      font-weight: 400;
-      color: white;
-      font-size: 16px;
+      margin-right: 25px; }
+    .baby-content .page-box .btu-box {
+      margin-top: 25px;
+      background: white;
+      box-shadow: 0px -3px 6px 0px rgba(0, 0, 0, 0.06);
+      width: 100%;
       text-align: center;
-      margin-top: 42px; }
+      padding: 18px 0; }
+      .baby-content .page-box .btu-box .btu-sub {
+        width: 196px;
+        height: 42px;
+        background: #2d6eff;
+        border-radius: 3px;
+        font-weight: 400;
+        color: white;
+        font-size: 16px;
+        text-align: center; }
