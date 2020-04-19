@@ -30,7 +30,7 @@
         <view class="babyList">
             <view class="muen">
                 <checkbox className="cheack-all" id="all" onChange="checkAll" values="123" checked="{{checkAll}}">全选</checkbox>
-                <view class="name">宝贝信息</view>
+                <view class="name" onTap="demo02">宝贝信息</view>
                 <view class="price" onTap="demo">价格</view>
                 <view class="inventory">
                     <view class="txt">库存</view>
@@ -68,7 +68,7 @@
         <block a:if="{{list.length > 0}}">
             <view class="page-box">
                 <view class="page">
-                    <my-pagination compid="{{$compid__75}}"></my-pagination>
+                    <my-pagination compid="{{$compid__36}}"></my-pagination>
                 </view>
                 <view class="btu-box">
                     <button class="btu-sub">确定（{{cheackList.length}}/{{total_results}}）</button>

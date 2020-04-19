@@ -22,7 +22,8 @@ class BabyContent extends Component {
             checkAll:false,
             classList:[],
             seller_cids:'all',
-            changeWord:'宝贝关键词'
+            changeWord:'宝贝关键词',
+            all:''
         }
     }
     //分类接口
@@ -74,44 +75,61 @@ class BabyContent extends Component {
             }
         )
     }
+
+    //重新进行封装
+    taobaoItemListGetPromise = (page) => {
+        return new Promise((resolve) => {
+            taobaoItemListGet(
+                {
+                    fields: this.state.fields,
+                    page_no: page,
+                    page_size: 20,
+                    status: this.state.status,
+                    extraArgs: {
+                        order_by: this.state.order_by,
+                        seller_cids:this.state.seller_cids
+                    },
+                    callback: (data) => {
+                        console.log(data);
+                        if (data.total_results > 0) {
+                            let newList = data.items.item.map((item, index) => {
+                                item.pic_url = item.pic_url + '_60x60.jpg';
+                                item.checked = false;
+                                if(this.state.cheackList.indexOf(item.num_iid) !== -1){
+                                    item.checked = true;
+                                }
+                                return item;
+                            })
+                            resolve(newList)
+                        } else {
+                            resolve([])
+                        }
+                    }
+                }
+            )
+        })
+    }
+
+    //接口调取数据,非商家编码
+    getListbyId = () => {
+        console.log('=============');
+        const total_results = 100;
+        const pageSize = total_results / 20;
+        const primiseArray = [];
+        for(let i = 1; i <= 5; i++) {
+            const promiseItem = this.taobaoItemListGetPromise(i);
+            primiseArray.push(promiseItem)
+        }
+        Promise.all(primiseArray).then(values => {
+            const allData = [].concat(...values);
+            this.setState({
+                all:allData
+            })
+        })
+    }
     //查询商家编码接口
     getListById = ()=> {
-        taobaoItemListGet(
-            {
-                fields: this.state.fields,
-                page_no: this.state.current,
-                page_size: 20,
-                status: this.state.status,
-                extraArgs: {
-                    order_by: this.state.order_by,
-                    seller_cids:this.state.seller_cids
-                },
-                callback: (data) => {
-                    let num = data.total_results / 20;
-                    console.log(data);
-                    if (data.total_results > 0) {
-                        let newList = data.items.item.map((item, index) => {
-                            item.pic_url = item.pic_url + '_60x60.jpg';
-                            item.checked = false;
-                            if(this.state.cheackList.indexOf(item.num_iid) !== -1){
-                                item.checked = true;
-                            }
-                            return item;
-                        })
-                        this.setState({
-                            list: newList,
-                            total_results: data.total_results,
-                            keywords: ''
-                        })
-                    } else {
-                        this.setState({
-                            list: []
-                        })
-                    }
-
-                }
-            }
-        )
+    
     }
     //切换商品状态
     changeStatus = (e) => {
@@ -240,6 +258,11 @@ class BabyContent extends Component {
         console.log(this.state.list);
         console.log(this.state.cheackList);
         console.log(this.state.classList);
+        this.getListbyId();
+    }
+    demo02 =()=> {
+        console.log(this.state.all);
+        this.taobaoItemListGetPromise(1);
     }
     componentDidMount() {
         //初始化页面数据，获取出售中的商品
@@ -287,7 +310,7 @@ class BabyContent extends Component {
                 <View className='babyList'>
                     <View className='muen'>
                         <checkbox className='cheack-all' id='all' onChange={this.checkAll} values='123' checked={checkAll}>全选</checkbox>
-                        <View className='name'>宝贝信息</View>
+                        <View className='name' onClick={this.demo02}>宝贝信息</View>
                         <View className='price' onClick={this.demo}>价格</View>
                         <View className='inventory'>
                             <View className='txt'>库存</View>

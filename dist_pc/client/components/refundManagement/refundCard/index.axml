@@ -18,7 +18,7 @@
         </view>
         <view class="card grid-cont">
             <view class="card-item1 grid-item12">
-                <order-card a:for="{{loopArray23}}" a:for-item="order" a:for-index="_anonIdx2" compid="{{order.$compid__41}}"></order-card>
+                <order-card a:for="{{loopArray24}}" a:for-item="order" a:for-index="_anonIdx2" compid="{{order.$compid__41}}"></order-card>
             </view>
             <view class="card-item3 grid-item7">
                 <view class="card-item-row"><text class="titles">实付</text>

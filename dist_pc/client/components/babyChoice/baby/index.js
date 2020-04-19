@@ -45,7 +45,7 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = BabyContent.__proto__ || Object.getPrototypeOf(BabyContent)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["$compid__75", "classList", "keywords", "checkAll", "order_by", "list", "cheackList", "total_results", "fields", "page", "status", "current", "seller_cids", "changeWord"], _this.getClasstify = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = BabyContent.__proto__ || Object.getPrototypeOf(BabyContent)).call.apply(_ref, [this].concat(args))), _this), _this.$usedState = ["$compid__36", "classList", "keywords", "checkAll", "order_by", "list", "cheackList", "total_results", "fields", "page", "status", "current", "seller_cids", "changeWord", "all"], _this.getClasstify = function () {
       (0, _index4.getInterceptBabySelectDataSource)(function (data) {
         _this.setState({
           classList: data
@@ -85,41 +85,53 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
           }
         }
       });
-    }, _this.getListById = function () {
-      (0, _taobaoItemListGet.taobaoItemListGet)({
-        fields: _this.state.fields,
-        page_no: _this.state.current,
-        page_size: 20,
-        status: _this.state.status,
-        extraArgs: {
-          order_by: _this.state.order_by,
-          seller_cids: _this.state.seller_cids
-        },
-        callback: function callback(data) {
-          var num = data.total_results / 20;
-          console.log(data);
-          if (data.total_results > 0) {
-            var newList = data.items.item.map(function (item, index) {
-              item.pic_url = item.pic_url + '_60x60.jpg';
-              item.checked = false;
-              if (_this.state.cheackList.indexOf(item.num_iid) !== -1) {
-                item.checked = true;
-              }
-              return item;
-            });
-            _this.setState({
-              list: newList,
-              total_results: data.total_results,
-              keywords: ''
-            });
-          } else {
-            _this.setState({
-              list: []
-            });
+    }, _this.taobaoItemListGetPromise = function (page) {
+      return new Promise(function (resolve) {
+        (0, _taobaoItemListGet.taobaoItemListGet)({
+          fields: _this.state.fields,
+          page_no: page,
+          page_size: 20,
+          status: _this.state.status,
+          extraArgs: {
+            order_by: _this.state.order_by,
+            seller_cids: _this.state.seller_cids
+          },
+          callback: function callback(data) {
+            console.log(data);
+            if (data.total_results > 0) {
+              var newList = data.items.item.map(function (item, index) {
+                item.pic_url = item.pic_url + '_60x60.jpg';
+                item.checked = false;
+                if (_this.state.cheackList.indexOf(item.num_iid) !== -1) {
+                  item.checked = true;
+                }
+                return item;
+              });
+              resolve(newList);
+            } else {
+              resolve([]);
+            }
           }
-        }
+        });
       });
-    }, _this.changeStatus = function (e) {
+    }, _this.getListbyId = function () {
+      console.log('=============');
+      var total_results = 100;
+      var pageSize = 5;
+      var primiseArray = [];
+      for (var i = 1; i <= 5; i++) {
+        var promiseItem = _this.taobaoItemListGetPromise(i);
+        primiseArray.push(promiseItem);
+      }
+      Promise.all(primiseArray).then(function (values) {
+        var _ref2;
+
+        var allData = (_ref2 = []).concat.apply(_ref2, _toConsumableArray(values));
+        _this.setState({
+          all: allData
+        });
+      });
+    }, _this.getListById = function () {}, _this.changeStatus = function (e) {
       _this.setState({
         status: e.detail.value
       });
@@ -226,6 +238,9 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
       console.log(_this.state.list);
       console.log(_this.state.cheackList);
       console.log(_this.state.classList);
+      _this.getListbyId();
+    }, _this.demo02 = function () {
+      console.log(_this.state.all);
     }, _this.customComponents = ["MyPagination"], _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -246,11 +261,18 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
         checkAll: false,
         classList: [],
         seller_cids: 'all',
-        changeWord: '宝贝关键词'
+        changeWord: '宝贝关键词',
+        all: ''
       };
       this.$$refs = [];
     }
     //分类接口
+
+    //接口调取数据,非商家编码
+
+
+    //重新进行封装
+
 
     //接口调取数据,非商家编码
 
@@ -291,10 +313,10 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
       var __prefix = this.$prefix;
       ;
 
-      var _genCompid = (0, _index2.genCompid)(__prefix + "$compid__75"),
+      var _genCompid = (0, _index2.genCompid)(__prefix + "$compid__36"),
           _genCompid2 = _slicedToArray(_genCompid, 2),
-          $prevCompid__75 = _genCompid2[0],
-          $compid__75 = _genCompid2[1];
+          $prevCompid__36 = _genCompid2[0],
+          $compid__36 = _genCompid2[1];
 
       var _state = this.__state,
           list = _state.list,
@@ -312,16 +334,16 @@ var BabyContent = (_temp2 = _class = function (_BaseComponent) {
         "pageSizeSelector": "dropdown",
         "pageSize": 20,
         "onPageNoChange": this.changePage
-      }, $compid__75, $prevCompid__75);
+      }, $compid__36, $prevCompid__36);
       Object.assign(this.__state, {
-        $compid__75: $compid__75
+        $compid__36: $compid__36
       });
       return this.__state;
     }
   }]);
 
   return BabyContent;
-}(_index2.Component), _class.$$events = ["changeStatus", "changeClasstify", "changeWord", "valueChange", "serach", "checkAll", "demo", "orderBy", "changeChecked"], _class.$$componentPath = "components/babyChoice/baby/index", _temp2);
+}(_index2.Component), _class.$$events = ["changeStatus", "changeClasstify", "changeWord", "valueChange", "serach", "checkAll", "demo02", "demo", "orderBy", "changeChecked"], _class.$$componentPath = "components/babyChoice/baby/index", _temp2);
 exports.default = BabyContent;
 
 Component(require('../../../npm/_tarojs/taro-alipay/index.js').default.createComponent(BabyContent));
